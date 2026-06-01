@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Try This Challenge 😂</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial;
+    background:linear-gradient(135deg,#1e3c72,#2a5298);
+    color:white;
+    text-align:center;
+    overflow:hidden;
+}
+
+.container{
+    padding:30px;
+}
+
+h1{
+    margin-bottom:10px;
+}
+
+#btn{
+    padding:15px 30px;
+    font-size:20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    position:absolute;
+    transition:0.2s;
+}
+
+#msg{
+    margin-top:20px;
+    font-size:22px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎯 Click the Button Challenge</h1>
+    <p>Try to click it 5 times 😏</p>
+    <button id="btn">CLICK ME</button>
+    <div id="msg"></div>
+</div>
+
+<script>
+let btn = document.getElementById("btn");
+let msg = document.getElementById("msg");
+
+let count = 0;
+btn.addEventListener("mouseover", moveButton);
+btn.addEventListener("touchstart", moveButton);
+btn.addEventListener("click", clicked);
+
+function moveButton(){
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 100);
+
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
+
+function clicked(){
+    count++;
+
+    if(count < 5){
+        msg.innerHTML = "Good 😆 keep going... " + count + "/10";
+    }
+
+    if(count === 5){
+        document.body.innerHTML = `
+        <div style="text-align:center;">
+            <h1>😂 Congratulations!</h1>
+            <p>You finally caught the button...</p>
+            <h2>Result: You are very persistent 😎</h2>
+            <p>Or maybe just stubborn 😭</p>
+        </div>
+        `;
+    }
+}
+</script>
+
+</body>
+</html>
