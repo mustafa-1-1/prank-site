@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Scanner v10.0</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background-color: #0b0f19;
+        color: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        overflow-x: hidden;
+      }
+      .panel {
+        background-color: #111827;
+        border: 2px solid #1f293d;
+        padding: 25px 20px;
+        border-radius: 16px;
+        max-width: 450px;
+        width: 100%;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .blue-text {
+        color: #38bdf8;
+        font-weight: bold;
+        letter-spacing: 1px;
+        font-size: 13px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      h1, h2, h3 {
+        margin-top: 0;
+        line-height: 1.3;
+      }
+      p {
+        color: #9ca3af;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      
+      /* Universal Buttons */
+      button {
+        padding: 14px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.2s, transform 0.1s;
+      }
+      .action-btn {
+        background-color: #2563eb;
+        color: white;
+      }
+      .action-btn:hover {
+        background-color: #3b82f6;
+      }
+      
+      /* Quiz Options */
+      .quiz-box {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .quiz-btn {
+        background-color: #1f2937;
+        color: white;
+        border: 1px solid #374151;
+        text-align: left;
+        padding: 14px;
+      }
+      .quiz-btn:hover {
+        background-color: #374151;
+        border-color: #38bdf8;
+      }
+
+      /* Progress Loading Screen */
+      .progress-bg {
+        background-color: #1f2937;
+        border-radius: 20px;
+        height: 20px;
+        width: 100%;
+        overflow: hidden;
+        margin: 20px 0;
+      }
+      .progress-fill {
+        background-color: #38bdf8;
+        height: 100%;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+      #status-text {
+        font-family: monospace;
+        color: #38bdf8;
+        font-size: 13px;
+        min-height: 20px;
+      }
+
+      /* Report Screen Styles */
+      .alert-banner {
+        background-color: rgba(239, 68, 68, 0.1);
+        border: 1px solid #ef4444;
+        color: #f87171;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+      .meter-bar {
+        background-color: #ef4444;
+        color: white;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 15px 0;
+        letter-spacing: 2px;
+      }
+      .escape-container {
+        position: relative;
+        margin-top: 25px;
+        min-height: 130px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+      }
+      #acceptBtn {
+        background-color: #22c55e;
+        color: white;
+        z-index: 5;
+        max-width: 280px;
+      }
+      #disagreeBtn {
+        background-color: #4b5563;
+        color: white;
+        max-width: 280px;
+        z-index: 10;
+      }
+
+      /* Final Diagnosis View */
+      .love-panel {
+        background-color: #fff1f2 !important;
+        color: #9f1239 !important;
+        border: 2px solid #fecdd3 !important;
+      }
+      .love-panel p, .love-panel li {
+        color: #be123c !important;
+      }
+      .list-style {
+        text-align: left;
+        display: inline-block;
+        margin: 10px auto;
+        padding: 0;
+        list-style: none;
+      }
+      .list-style li {
+        margin: 6px 0;
+        font-weight: 500;
+      }
+
+      /* Floating Hearts Effect */
+      .heart-drop {
+        position: fixed;
+        top: -20px;
+        font-size: 24px;
+        pointer-events: none;
+        animation: fall linear forwards;
+        z-index: 999;
+      }
+      @keyframes fall {
+        to { transform: translateY(105vh) rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- CONTAINER BOX -->
+    <div class="panel" id="mainPanel">
+      
+      <!-- SCREEN 1: Welcome -->
+      <div id="s1">
+        <div class="blue-text">System Tool v10.0</div>
+        <h1>Relationship Compatibility Scanner</h1>
+        <p>This automated test uses smart AI, mind analysis, and special formulas to check your connection status.</p>
+        <br />
+        <button class="action-btn" onclick="showScreen(2)">START SCAN</button>
+      </div>
+
+      <!-- SCREEN 2: Silliest Questions -->
+      <div id="s2" class="hidden">
+        <div class="blue-text" id="quizStep">Question 1 of 5</div>
+        <h2 id="questionText">Do you like coffee? ☕</h2>
+        <div class="quiz-box">
+          <button class="quiz-btn" onclick="nextQuestion()">Yes, I do!</button>
+          <button class="quiz-btn" onclick="nextQuestion()">No, not really</button>
+          <button class="quiz-btn" onclick="nextQuestion()">Sometimes</button>
+        </div>
+      </div>
+
+      <!-- SCREEN 3: Deep Fake Loading -->
+      <div id="s3" class="hidden">
+        <div class="blue-text">Analyzing Submissions</div>
+        <h2 id="pctText">0%</h2>
+        <div class="progress-bg">
+          <div class="progress-fill" id="progressBar"></div>
+        </div>
+        <div id="status-text">Loading secure database...</div>
+      </div>
+
+      <!-- SCREEN 4 & 5: Big Reveal & Jumping Button -->
+      <div id="s4" class="hidden">
+        <div class="alert-banner">⚠️ CONFIDENTIAL REPORT ⚠️</div>
+        <h3>Compatibility with Mustafa:</h3>
+        
+        <div class="meter-bar">████████████ 100%</div>
+        
+        <p style="color: #ef4444; font-weight: bold;">
+          STATUS: EXTREMELY DANGEROUS LEVELS OF LOVE DETECTED ❤️
+        </p>
+
+        <div class="escape-container">
+          <button id="acceptBtn" onclick="showFinalScreen()">ACCEPT RESULTS ❤️</button>
+          <button id="disagreeBtn" onclick="runAway()">Disagree With Results</button>
+        </div>
+      </div>
+
+      <!-- SCREEN 6: Final Diagnosis -->
+      <div id="s6" class="hidden">
+        <span style="font-size: 40px;">🎉</span>
+        <h2>CONGRATULATIONS</h2>
+        <p>You have officially been diagnosed with:</p>
+        <h2 style="color: #e11d48; margin: 10px 0;">Mustafaitis™</h2>
+        <p>A rare condition where a person cannot stop thinking about Mustafa. There is currently no cure.</p>
+        
+        <!-- Emergency Alert hidden section, pops up after 5 seconds -->
+        <div id="emergencySection" class="hidden" style="margin-top: 20px; border-top: 1px dashed #fda4af; padding-top: 15px;">
+          <h3 style="color: #ef4444;">🚨 EMERGENCY ALERT 🚨</h3>
+          <p>The patient is too far gone. Recommended treatment:</p>
+          <ul class="list-style">
+            <li>✓ One warm hug</li>
+            <li>✓ One happy smile</li>
+            <li>✓ One long conversation</li>
+          </ul>
+          <p style="font-size: 13px; margin-top: 15px;"><b>Admin Approval Required:</b> [ MUSTAFA ]</p>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+      // Tracking Variables
+      let currentQuestion = 1;
+      let acceptScale = 1.0;
+      
+      const questions = [
+        "Do you like coffee? ☕",
+        "Are you an honest person? 😊",
+        "Do you smile when reading messages? 😏",
+        "Do you know a guy named Mustafa? 👀",
+        "Do you think Mustafa asks strange questions? 😂"
+      ];
+
+      function showScreen(num) {
+        document.getElementById('s1').classList.add('hidden');
+        document.getElementById('s2').classList.add('hidden');
+        document.getElementById('s3').classList.add('hidden');
+        document.getElementById('s4').classList.add('hidden');
+        document.getElementById('s6').classList.add('hidden');
+        document.getElementById('s' + num).classList.remove('hidden');
+      }
+
+      // Quiz Engine Logic
+      function nextQuestion() {
+        currentQuestion++;
+        if (currentQuestion <= 5) {
+          document.getElementById('quizStep').innerText = `Question ${currentQuestion} of 5`;
+          document.getElementById('questionText').innerText = questions[currentQuestion - 1];
+        } else {
+          showScreen(3);
+          runFakeAnalysis();
+        }
+      }
+
+      // Fake Analysis Logic with 99% Suspense Pause
+      function runFakeAnalysis() {
+        const bar = document.getElementById('progressBar');
+        const pct = document.getElementById('pctText');
+        const status = document.getElementById('status-text');
+        
+        let progressValues = [
+          {p: 10, t: "Checking answers..."},
+          {p: 35, t: "Reading secure files..."},
+          {p: 67, t: "Analyzing WhatsApp history..."},
+          {p: 89, t: "Contacting NASA servers..."},
+          {p: 99, t: "Finalizing score matrix..."}
+        ];
+        
+        let index = 0;
+        
+        function updateProgress() {
+          if (index < progressValues.length) {
+            let current = progressValues[index];
+            bar.style.width = current.p + "%";
+            pct.innerText = current.p + "%";
+            status.innerText = current.t;
+            
+            // If we hit 99%, pause intentionally for 3 full seconds
+            if (current.p === 99) {
+              setTimeout(() => {
+                showScreen(4);
+              }, 3000);
+            } else {
+              index++;
+              setTimeout(updateProgress, 1000);
+            }
+          }
+        }
+        updateProgress();
+      }
+
+      // Fleeing Button Game Logic
+      function runAway() {
+        const noBtn = document.getElementById('disagreeBtn');
+        const yesBtn = document.getElementById('acceptBtn');
+        
+        // 1. Randomly jump button coordinates anywhere on viewport safely
+        const spacePadding = 30;
+        const limitX = window.innerWidth - noBtn.offsetWidth - spacePadding;
+        const limitY = window.innerHeight - noBtn.offsetHeight - spacePadding;
+        
+        const targetX = Math.max(spacePadding, Math.floor(Math.random() * limitX));
+        const targetY = Math.max(spacePadding, Math.floor(Math.random() * limitY));
+        
+        noBtn.style.position = "fixed";
+        noBtn.style.left = targetX + "px";
+        noBtn.style.top = targetY + "px";
+        
+        // Change button words to tease her
+        noBtn.innerText = "ERROR 404: Not Found!";
+        
+        // 2. Make the green Accept button grow larger and larger
+        acceptScale += 0.15;
+        yesBtn.style.transform = `scale(${acceptScale})`;
+      }
+
+      // Final Screen Reveal & Heart Drop Simulation
+      function showFinalScreen() {
+        // Reset fixed position elements back before hiding
+        document.getElementById('disagreeBtn').style.position = "static";
+        
+        showScreen(6);
+        document.getElementById('mainPanel').classList.add('love-panel');
+        
+        // Rain Heart graphics down
+        for (let i = 0; i < 50; i++) {
+          let heart = document.createElement("div");
+          heart.className = "heart-drop";
+          heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💖";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+          document.body.appendChild(heart);
+        }
+        
+        // Trigger Boss Level Emergency alert exactly after 5 seconds
+        setTimeout(() => {
+          document.getElementById('emergencySection').classList.remove('hidden');
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>

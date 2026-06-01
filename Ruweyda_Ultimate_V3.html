@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CLASSIFIED - Ruweyda Investigation</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #050505;
+        color: #00ff66;
+        font-family: 'Courier New', Consolas, monospace;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+      }
+      .screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 90vh;
+        flex-direction: column;
+        text-align: center;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .card {
+        background: #111;
+        border: 2px solid #00ff66;
+        padding: 30px 20px;
+        border-radius: 12px;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+      }
+      h1, h2, h3 {
+        margin-top: 0;
+        letter-spacing: 1px;
+      }
+      p {
+        line-height: 1.5;
+        margin: 10px 0;
+      }
+      .evidence-list {
+        text-align: left;
+        display: inline-block;
+        margin: 15px auto;
+        padding: 0;
+        list-style: none;
+      }
+      .evidence-list li {
+        margin: 8px 0;
+      }
+      button {
+        padding: 14px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        font-family: inherit;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s, background 0.2s;
+        margin: 10px;
+      }
+      button:active {
+        transform: scale(0.95);
+      }
+      .green {
+        background: #00aa55;
+        color: white;
+      }
+      .green:hover {
+        background: #00cc66;
+      }
+      .red {
+        background: #cc3333;
+        color: white;
+      }
+      .scan {
+        width: 180px;
+        height: 180px;
+        border: 3px solid #00ff66;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 25px auto;
+        position: relative;
+        font-weight: bold;
+        background: rgba(0, 255, 102, 0.05);
+      }
+      .scan::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: #00ff66;
+        left: 0;
+        top: 0;
+        box-shadow: 0 0 8px #00ff66;
+        animation: scan 2s infinite ease-in-out;
+      }
+      @keyframes scan {
+        0%, 100% { top: 0%; }
+        50% { top: 100%; }
+      }
+      .bar {
+        height: 24px;
+        background: #222;
+        border-radius: 20px;
+        overflow: hidden;
+        margin: 20px 0;
+        border: 1px solid #00ff66;
+      }
+      .fill {
+        height: 100%;
+        width: 0;
+        background: #00ff66;
+        transition: width 0.05s linear;
+      }
+      #terminal {
+        height: 250px;
+        overflow-y: auto;
+        text-align: left;
+        background: #000;
+        padding: 15px;
+        border: 1px solid #00ff66;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      /* Beautiful Responsive Image Grid */
+      .photo-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        margin: 20px 0;
+      }
+      .photo {
+        width: 160px;
+        height: 200px;
+        border: 2px dashed #00ff66;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+      }
+      .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .photo-placeholder {
+        font-size: 11px;
+        padding: 10px;
+        color: #00ff66;
+        opacity: 0.7;
+      }
+      /* Absolute escape container control */
+      .action-box {
+        position: relative;
+        margin-top: 25px;
+        min-height: 80px;
+      }
+      #noBtn {
+        position: absolute;
+        white-space: nowrap;
+        z-index: 10;
+      }
+      .confetti {
+        position: fixed;
+        top: -20px;
+        font-size: 24px;
+        user-select: none;
+        pointer-events: none;
+        animation: fall linear forwards;
+        z-index: 999;
+      }
+      @keyframes fall {
+        to {
+          transform: translateY(105vh) rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <div id="s1" class="screen">
+      <div class="card">
+        <h1>🔒 GOVERNMENT DATABASE ACCESS</h1>
+        <p>Confidential Investigation File</p>
+        <p><b>Subject: RUWEYDA</b></p>
+        <br />
+        <button class="green" onclick="startFingerprint()">
+          BEGIN AUTHENTICATION
+        </button>
+      </div>
+    </div>
+
+    <div id="s2" class="screen hidden">
+      <div class="card">
+        <h2>🖐 Fingerprint Authentication Required</h2>
+        <div class="scan">PLACE FINGER</div>
+        <p id="scanText">Scanning...</p>
+      </div>
+    </div>
+
+    <div id="s3" class="screen hidden">
+      <div class="card">
+        <h2>💻 Secure Intelligence Terminal</h2>
+        <div id="terminal"></div>
+      </div>
+    </div>
+
+    <div id="s4" class="screen hidden">
+      <div class="card">
+        <h2>📡 Subject Analysis</h2>
+        <div class="bar"><div id="fill" class="fill"></div></div>
+        <h3 id="pct">0%</h3>
+      </div>
+    </div>
+
+    <div id="s5" class="screen hidden">
+      <div class="card">
+        <h1>📂 CLASSIFIED DOSSIER</h1>
+
+        <div class="photo-container">
+          <div class="photo">
+            <img src="WhatsApp Image 2026-05-02 at 21.03.33.jpeg" alt="Evidence 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="photo-placeholder" style="display:none;">EVIDENCE #1</div>
+          </div>
+          <div class="photo">
+            <img src="WhatsApp Image 2026-05-27 at 08.38.37.jpeg" alt="Evidence 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="photo-placeholder" style="display:none;">EVIDENCE #2</div>
+          </div>
+        </div>
+
+        <h2>SUBJECT IDENTIFIED: RUWEYDA</h2>
+        <p><b>Status:</b> Under Active Investigation</p>
+        <p><b>Crime:</b> Being too cute 😆</p>
+        
+        <p style="margin-top:15px; text-decoration: underline;">Evidence Found:</p>
+        <ul class="evidence-list">
+          <li>✓ Smiles at Mustafa's messages</li>
+          <li>✓ Responds suspiciously fast</li>
+          <li>✓ Remembers conversations</li>
+          <li>✓ Cares about Mustafa</li>
+        </ul>
+
+        <h2 style="color: #fff; text-shadow: 0 0 10px #00ff66;">Compatibility Score: 100%</h2>
+
+        <div class="action-box">
+          <button id="accept" class="green">ACCEPT FINDINGS ❤️</button>
+          <button id="noBtn" class="red">REPORT IS WRONG</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="s6" class="screen hidden">
+      <div class="card">
+        <h1>🎉 FINAL CLASSIFIED RESULT 🎉</h1>
+        <h2>CONGRATULATIONS RUWEYDA ❤️</h2>
+        <h3 style="color: #ff3366;">Diagnosis: Mustafaitis™ Stage 5</h3>
+        
+        <p><b>Symptoms:</b></p>
+        <ul class="evidence-list" style="margin: 5px auto;">
+          <li>✅ Thinking about Mustafa</li>
+          <li>✅ Smiling randomly</li>
+          <li>✅ Reading old chats</li>
+          <li>✅ Missing Mustafa</li>
+          <li>✅ Denying everything 😂</li>
+        </ul>
+        <br />
+        <h2>Recommended Treatment</h2>
+        <p>❤️ One Hug</p>
+        <p>❤️ One Smile</p>
+        <p>❤️ One Long Conversation With Mustafa</p>
+        <br>
+        <p style="font-size: 12px; opacity: 0.7;"><b>International Mustafa Research Agency™</b></p>
+      </div>
+    </div>
+
+    <script>
+      const s1 = document.getElementById('s1');
+      const s2 = document.getElementById('s2');
+      const s3 = document.getElementById('s3');
+      const s4 = document.getElementById('s4');
+      const s5 = document.getElementById('s5');
+      const s6 = document.getElementById('s6');
+      const scanText = document.getElementById('scanText');
+      const terminal = document.getElementById('terminal');
+      const fill = document.getElementById('fill');
+      const pct = document.getElementById('pct');
+      const noBtn = document.getElementById('noBtn');
+      const accept = document.getElementById('accept');
+
+      function beep() {
+        try {
+          const a = new (window.AudioContext || window.webkitAudioContext)();
+          const o = a.createOscillator();
+          const g = a.createGain();
+          o.connect(g);
+          g.connect(a.destination);
+          o.frequency.value = 600;
+          o.start();
+          g.gain.exponentialRampToValueAtTime(0.0001, a.currentTime + 0.15);
+          o.stop(a.currentTime + 0.15);
+        } catch(e) { console.log("Audio not allowed yet"); }
+      }
+
+      function startFingerprint() {
+        s1.classList.add("hidden");
+        s2.classList.remove("hidden");
+        let p = 0;
+        const t = setInterval(() => {
+          p += 10;
+          scanText.innerText = "Fingerprint Match: " + p + "%";
+          beep();
+          if (p >= 100) {
+            clearInterval(t);
+            setTimeout(startTerminal, 700);
+          }
+        }, 250);
+      }
+
+      function startTerminal() {
+        s2.classList.add("hidden");
+        s3.classList.remove("hidden");
+        const lines = [
+          "ACCESS GRANTED",
+          "Connecting to intelligence satellites...",
+          "Searching national database...",
+          "Subject found: RUWEYDA",
+          "Loading photo evidence paths...",
+          "Checking chat response time...",
+          "Running compatibility engine...",
+          "Warning: High affection levels detected.",
+        ];
+        let i = 0;
+        const t = setInterval(() => {
+          terminal.innerHTML += lines[i] + "<br>";
+          terminal.scrollTop = terminal.scrollHeight;
+          beep();
+          i++;
+          if (i >= lines.length) {
+            clearInterval(t);
+            setTimeout(startScan, 1000);
+          }
+        }, 600);
+      }
+
+      function startScan() {
+        s3.classList.add("hidden");
+        s4.classList.remove("hidden");
+        let p = 0;
+        const t = setInterval(() => {
+          p++;
+          fill.style.width = p + "%";
+          pct.innerText = p + "%";
+          if (p >= 100) {
+            clearInterval(t);
+            setTimeout(() => {
+              s4.classList.add("hidden");
+              s5.classList.remove("hidden");
+            }, 700);
+          }
+        }, 30);
+      }
+
+      // Safe trick fleeing mechanic for both Mobile and Desktop
+      function moveNoButton() {
+        const padding = 20;
+        // Keep the button constraint within reasonable screen dimensions
+        const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+        const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+        
+        const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+        
+        // Switch to fixed tracking mode once it begins fleeing
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+        
+        noBtn.innerText = [
+          "ESCAPE DENIED",
+          "AI DISAGREES",
+          "TRUTH DETECTED",
+          "NICE TRY RUWEYDA 😏",
+        ][Math.floor(Math.random() * 4)];
+      }
+
+      noBtn.addEventListener("mouseover", moveNoButton);
+      noBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // Prevents clicking on mobile
+        moveNoButton();
+      });
+
+      accept.addEventListener("click", () => {
+        s5.classList.add("hidden");
+        s6.classList.remove("hidden");
+
+        for (let i = 0; i < 70; i++) {
+          let c = document.createElement("div");
+          c.className = "confetti";
+          c.innerHTML = Math.random() > 0.5 ? "🎉" : "❤️";
+          c.style.left = Math.random() * 100 + "vw";
+          c.style.animationDuration = (2 + Math.random() * 3) + "s";
+          c.style.fontSize = Math.floor(Math.random() * 20 + 16) + "px";
+          document.body.appendChild(c);
+        }
+
+        setTimeout(() => {
+          alert(
+            "🚨 GOVERNMENT NOTICE 🚨\n\nSubject: RUWEYDA\n\nResult: 100% Compatible With Mustafa ❤️",
+          );
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>

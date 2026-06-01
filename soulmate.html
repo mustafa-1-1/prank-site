@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background-color: #f2f2f7; /* Classic iOS Light Gray background */
+        color: #000000;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: block;
+        min-height: 100vh;
+      }
+      /* Top Clean Chat Navigation Bar */
+      .chat-header {
+        background: #ffffff;
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #e5e5ea;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .avatar {
+        width: 45px;
+        height: 45px;
+        background: #007aff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 20px;
+        margin: 0 auto 5px auto;
+      }
+      .chat-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+      }
+      .chat-status {
+        font-size: 11px;
+        color: #8e8e93;
+        margin: 2px 0 0 0;
+      }
+
+      /* Streamlined Message Thread Wrapper */
+      .chat-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px 15px 100px 15px;
+      }
+
+      /* Chat Bubbles Layout */
+      .bubble-row {
+        display: flex;
+        width: 100%;
+        margin-bottom: 12px;
+      }
+      .incoming {
+        justify-content: flex-start;
+      }
+      .outgoing {
+        justify-content: flex-end;
+      }
+      .bubble {
+        max-width: 75%;
+        padding: 12px 16px;
+        border-radius: 20px;
+        font-size: 15px;
+        line-height: 1.4;
+      }
+      .incoming .bubble {
+        background: #e5e5ea;
+        color: #000000;
+        border-bottom-left-radius: 5px;
+      }
+      .outgoing .bubble {
+        background: #007aff;
+        color: #ffffff;
+        border-bottom-right-radius: 5px;
+      }
+
+      /* Interactive Menu Options */
+      .reply-panel {
+        background: rgba(255, 255, 255, 0.9);
+        border-top: 1px solid #e5e5ea;
+        padding: 15px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+        z-index: 101;
+        backdrop-filter: blur(10px);
+      }
+      .reply-btn {
+        background: #ffffff;
+        color: #007aff;
+        border: 1px solid #d1d1d6;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        transition: all 0.1s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      }
+      .reply-btn:active {
+        background: #e5e5ea;
+      }
+      .hidden {
+        display: none !important;
+      }
+      
+      /* Special Love Theme Shift */
+      .love-bg {
+        background-color: #fff0f5 !important;
+        transition: background-color 0.5s ease;
+      }
+      .heart-explosion {
+        position: fixed;
+        top: -20px;
+        font-size: 24px;
+        pointer-events: none;
+        animation: drop linear forwards;
+        z-index: 200;
+      }
+      @keyframes drop {
+        to { transform: translateY(105vh) rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body id="mainBody">
+
+    <!-- TOP HEADER BAR -->
+    <div class="chat-header">
+      <div class="avatar" id="avatarIcon">⚙️</div>
+      <p class="chat-title" id="senderName">System Cloud Diagnostics</p>
+      <p class="chat-status" id="senderStatus">Automated Service</p>
+    </div>
+
+    <!-- MAIN CHAT THREAD -->
+    <div class="chat-container" id="chatThread">
+      
+      <!-- Message 1 -->
+      <div class="bubble-row incoming">
+        <div class="bubble">
+          ⚠️ <b>STORAGE ALERT:</b> Your local device memory cache is full. Background diagnostic logs reveal a massive memory leak under the query folder <b>"Mustafa"</b>.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ACTION FOOTER BAR -->
+    <div class="reply-panel" id="actionPanel">
+      <button class="reply-btn" id="opt1" onclick="triggerStep1()">Clear Cache / Optimize</button>
+    </div>
+
+    <script>
+      const chatThread = document.getElementById('chatThread');
+      const actionPanel = document.getElementById('actionPanel');
+      const mainBody = document.getElementById('mainBody');
+      const avatarIcon = document.getElementById('avatarIcon');
+      const senderName = document.getElementById('senderName');
+      const senderStatus = document.getElementById('senderStatus');
+
+      function appendMessage(sender, text) {
+        const row = document.createElement('div');
+        row.className = `bubble-row ${sender}`;
+        row.innerHTML = `<div class="bubble">${text}</div>`;
+        chatThread.appendChild(row);
+        
+        // Auto scrolls the phone screen down smoothly
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }
+
+      function triggerStep1() {
+        actionPanel.classList.add('hidden');
+        appendMessage('outgoing', 'Clear Cache / Optimize');
+        
+        setTimeout(() => {
+          appendMessage('incoming', '🤖 <b>SYSTEM:</b> Optimization failed. The directory is protected by emotional encryption.');
+        }, 800);
+
+        setTimeout(() => {
+          appendMessage('incoming', 'Please review the offending logs to clear manually: <br><br><b>[Log 08:34]</b> Ruweyda smiled at her phone screen while reading his text.<br><b>[Log 14:12]</b> Ruweyda missed Mustafa silently but denied it.');
+          
+          // Show new response option
+          actionPanel.innerHTML = `<button class="reply-btn" onclick="triggerStep2()">Hey, delete these logs! I'm not that obvious!</button>`;
+          actionPanel.classList.remove('hidden');
+        }, 1800);
+      }
+
+      function triggerStep2() {
+        actionPanel.classList.add('hidden');
+        appendMessage('outgoing', "Hey, delete these logs! I'm not that obvious!");
+
+        setTimeout(() => {
+          appendMessage('incoming', '🤖 <b>SYSTEM:</b> Error. Core AI analysis indicates you *are* that obvious. Your chat response speed to Mustafa matches the speed of light.');
+        }, 1000);
+
+        setTimeout(() => {
+          appendMessage('incoming', 'To manually reset memory indices and exit this protocol, please verify your true identity below.');
+          
+          actionPanel.innerHTML = `
+            <button class="reply-btn" onclick="triggerFinal('A')">I am a stubborn girl who likes Mustafa</button>
+            <button class="reply-btn" onclick="triggerFinal('B')">I am completely obsessed with Mustafa</button>
+          `;
+          actionPanel.classList.remove('hidden');
+        }, 2200);
+      }
+
+      function triggerFinal(choice) {
+        actionPanel.classList.add('hidden');
+        const textChoice = choice === 'A' ? 'I am a stubborn girl who likes Mustafa' : 'I am completely obsessed with Mustafa';
+        appendMessage('outgoing', textChoice);
+
+        setTimeout(() => {
+          // Switch UI layout to romantic setup completely
+          mainBody.classList.add('love-bg');
+          avatarIcon.innerText = "🥰";
+          avatarIcon.style.background = "#ff4d94";
+          senderName.innerText = "Mustafa ❤️";
+          senderName.style.color = "#ff4d94";
+          senderStatus.innerText = "Online & Smiling";
+
+          appendMessage('incoming', '<b>Diagnosis Cancelled! 😉</b><br><br>Relax, Ruweyda! Your storage is completely fine. The system bypassed everything because it just wanted to make you smile.');
+        }, 1200);
+
+        setTimeout(() => {
+          appendMessage('incoming', 'There are no memory leaks, but you are stuck with me forever now. Deal with it! 😂❤️');
+          celebrateHearts();
+        }, 2600);
+      }
+
+      function celebrateHearts() {
+        for (let i = 0; i < 60; i++) {
+          let heart = document.createElement("div");
+          heart.className = "heart-explosion";
+          heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💖";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+          heart.style.fontSize = Math.floor(Math.random() * 20 + 20) + "px";
+          document.body.appendChild(heart);
+        }
+      }
+    </script>
+  </body>
+</html>

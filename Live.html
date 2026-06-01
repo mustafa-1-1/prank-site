@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🔴 LIVE BROADCAST IN PROGRESS</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #000000;
+        color: #ffffff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        overflow: hidden;
+      }
+      .screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 90vh;
+        flex-direction: column;
+        text-align: center;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .card {
+        background: #111111;
+        border: 1px solid #333;
+        padding: 25px 15px;
+        border-radius: 16px;
+        max-width: 450px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      }
+      .live-badge {
+        background: #ff0000;
+        color: white;
+        padding: 4px 10px;
+        font-weight: bold;
+        font-size: 12px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-bottom: 10px;
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        50% { opacity: 0.4; }
+      }
+      .viewer-count {
+        color: #aaaaaa;
+        font-size: 13px;
+        margin-bottom: 20px;
+      }
+      /* Fake Camera feed placeholder */
+      .video-feed {
+        width: 100%;
+        height: 240px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        margin: 15px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border: 1px solid #ff0000;
+        overflow: hidden;
+      }
+      .camera-icon {
+        font-size: 45px;
+        margin-bottom: 10px;
+        animation: staticPulse 0.5s infinite linear;
+      }
+      /* Fake live comments scrolling container */
+      .chat-container {
+        background: #050505;
+        border-radius: 8px;
+        height: 130px;
+        overflow-y: hidden;
+        padding: 10px;
+        text-align: left;
+        font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        border: 1px solid #222;
+      }
+      .chat-msg {
+        animation: slideUp 0.2s ease-out;
+      }
+      .chat-user {
+        font-weight: bold;
+        color: #3ea6ff;
+      }
+      @keyframes slideUp {
+        from { transform: translateY(10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      button {
+        padding: 14px 20px;
+        font-size: 15px;
+        font-weight: bold;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 15px;
+        transition: background 0.2s;
+      }
+      .end-btn {
+        background: #ff0000;
+        color: white;
+      }
+      .end-btn:hover { background: #cc0000; }
+      
+      /* Love Reveal Styles */
+      .love-card {
+        background: #fff0f5 !important;
+        color: #333333 !important;
+        border: none !important;
+        box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3) !important;
+      }
+      .love-btn {
+        background: #ff4d94 !important;
+        color: white !important;
+      }
+      .confetti {
+        position: fixed;
+        top: -20px;
+        font-size: 24px;
+        pointer-events: none;
+        animation: fall linear forwards;
+        z-index: 1000;
+      }
+      @keyframes fall {
+        to { transform: translateY(105vh) rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- SCREEN 1: Enter Broadcast -->
+    <div id="scr1" class="screen">
+      <div class="card" style="border-color: #333;">
+        <span style="font-size: 40px;">📲</span>
+        <h2>System Permission Update</h2>
+        <p style="color: #aaa; font-size: 14px;">Your background video cache needs optimization to display Mustafa's link correctly.</p>
+        <br />
+        <button class="end-btn" style="background: #222;" onclick="startStream()">CONTINUE TO LINK</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: The Fake Live Stream Panic -->
+    <div id="scr2" class="screen hidden">
+      <div class="card">
+        <div class="live-badge">🔴 LIVE</div>
+        <div class="viewer-count">👁 24,108 people watching</div>
+        
+        <div class="video-feed">
+          <div class="camera-icon">🎥</div>
+          <div style="font-size: 13px; color: #ff3333; font-weight: bold; letter-spacing: 1px;">FRONT CAMERA ACTIVE</div>
+          <div style="font-size: 11px; color: #777; margin-top: 5px;">Streaming to: YouTube Public Network</div>
+        </div>
+
+        <div id="chat-box" class="chat-container">
+          <!-- Comments inject dynamically here -->
+        </div>
+
+        <button class="end-btn" onclick="endStream()">🔴 DISCONNECT STREAM</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: The Cute Reveal -->
+    <div id="scr3" class="screen hidden">
+      <div id="finalCard" class="card love-card">
+        <span style="font-size: 50px;">🎬❤️</span>
+        <h1 style="color: #ff4d94; margin-bottom: 10px;">STREAM DISCONNECTED!</h1>
+        <p><b>Relax, Ruweyda! 😂 Nobody was actually watching you.</b></p>
+        <p style="font-size: 15px; line-height: 1.5; color: #555;">
+          Your front camera wasn't on, but if it was, the whole world would have just seen how incredibly cute you look looking at your phone right now. 
+        </p>
+        <p style="font-weight: bold; margin-top: 15px; color: #ff4d94;">Mustafa thinks about you 24/7! 🥰</p>
+        <br />
+        <button class="love-btn" onclick="celebrate()">CLOSE & SEND A HUG</button>
+      </div>
+    </div>
+
+    <script>
+      const scr1 = document.getElementById('scr1');
+      const scr2 = document.getElementById('scr2');
+      const scr3 = document.getElementById('scr3');
+      const chatBox = document.getElementById('chat-box');
+
+      const fakeComments = [
+        { u: "User_992", m: "Wait who is this?? 😂" },
+        { u: "Sara_K", m: "Omg she looks so confused haha" },
+        { u: "Alex_Vlog", m: "Is this a glitch? Why is this live?" },
+        { u: "X_Gamer", m: "Nice phone though" },
+        { u: "D_Real", m: "She's actually so pretty 😮" },
+        { u: "MemeLord", m: "Bro what is happening in the chat" },
+        { u: "Ruweyda_Fan", m: "Is she a celebrity or something??" },
+        { u: "Hassan_7", m: "Why are 24k people here lol!!" },
+        { u: "CuteVibes", m: "Aww look at her expression 🥰" }
+      ];
+
+      let chatInterval;
+
+      function startStream() {
+        scr1.classList.add('hidden');
+        scr2.classList.remove('hidden');
+        
+        // Start rapidly posting fake comments to create panic
+        chatInterval = setInterval(() => {
+          const comment = fakeComments[Math.floor(Math.random() * fakeComments.length)];
+          const element = document.createElement('div');
+          element.className = 'chat-msg';
+          element.innerHTML = `<span class="chat-user">${comment.u}:</span> ${comment.m}`;
+          
+          chatBox.appendChild(element);
+          
+          // Keep only last 5 messages visible to loop smoothly
+          if (chatBox.children.length > 6) {
+            chatBox.removeChild(chatBox.firstChild);
+          }
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }, 600);
+      }
+
+      function endStream() {
+        clearInterval(chatInterval);
+        scr2.classList.add('hidden');
+        scr3.classList.remove('hidden');
+      }
+
+      function celebrate() {
+        for (let i = 0; i < 60; i++) {
+          let heart = document.createElement("div");
+          heart.className = "confetti";
+          heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💖";
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.animationDuration = (1.5 + Math.random() * 2) + "s";
+          heart.style.fontSize = Math.floor(Math.random() * 20 + 20) + "px";
+          document.body.appendChild(heart);
+        }
+        alert("Prank Success! Now go message Mustafa and tell him he got you! 😂❤️");
+      }
+    </script>
+  </body>
+</html>
