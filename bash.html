@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baaritaanka Hab-fekerka System-ka</title>
+
+<style>
+    :root {
+        --bg-primary: #0f172a;
+        --bg-surface: #1e293b;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --accent-success: #10b981;
+        --accent-success-hover: #059669;
+        --border-color: #334155;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        padding: 20px;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 540px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        padding: 40px 32px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    #text {
+        font-size: clamp(18px, 4vw, 22px);
+        font-weight: 500;
+        color: var(--text-primary);
+        min-height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.6;
+        white-space: pre-line;
+    }
+
+    .progress-container {
+        width: 100%;
+        height: 8px;
+        background-color: var(--border-color);
+        border-radius: 999px;
+        margin-top: 32px;
+        overflow: hidden;
+        display: none;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background-color: var(--accent);
+        border-radius: 999px;
+        transition: width 0.4s ease-out;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 14px 32px;
+        margin-top: 32px;
+        background-color: var(--accent);
+        color: #ffffff;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        border-radius: 8px;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+        background-color: var(--accent-hover);
+    }
+
+    .btn:active {
+        transform: scale(0.98);
+    }
+
+    #next-btn {
+        display: none;
+        background-color: var(--accent-success);
+    }
+
+    #next-btn:hover {
+        background-color: var(--accent-success-hover);
+    }
+
+    /* Qaybta Natiijada ugu dambaysa */
+    .result-view {
+        display: none;
+        text-align: left;
+        animation: fadeIn 0.6s ease-in-out forwards;
+    }
+
+    .result-view h1 {
+        font-size: 26px;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+        text-align: center;
+    }
+
+    .result-view p {
+        color: var(--text-secondary);
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .result-view h2 {
+        font-size: 20px;
+        color: var(--accent);
+        margin: 24px 0 12px 0;
+        text-align: center;
+    }
+
+    .divider {
+        border: 0;
+        height: 1px;
+        background: var(--border-color);
+        margin: 24px 0;
+    }
+
+    .result-view h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+    }
+
+    .action-list {
+        list-style: none;
+    }
+
+    .action-list li {
+        font-size: 15px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .action-list li::before {
+        content: "✓";
+        color: var(--accent);
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .footer {
+        margin-top: 32px;
+        font-size: 14px;
+        color: var(--text-secondary);
+        text-align: center;
+        border-top: 1px solid var(--border-color);
+        padding-top: 16px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+
+<div class="container" id="app-container">
+    <div id="scan-view">
+        <div id="text">System-ku waa diyaar. Diyaar u ah inuu ku baaro.</div>
+        
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <button class="btn" id="btn">BILOW BAARITAANKA</button>
+        <button class="btn" id="next-btn">AKHRI MIDKA XIGA →</button>
+    </div>
+
+    <div id="result-view" class="result-view">
+        <h1>Baaritaankii Waa Dhammaaday</h1>
+        <p>Natiijadu waxay muujinaysaa in dhammaan qaybaha maskaxdaadu ay caafimaad qabaan.</p>
+        <p>Kaliya waxaa jira dib-u-dhac yar oo ka dhasha fekerka badan mararka qaar.</p>
+
+        <h2>Qaado Tallaabo Hadda</h2>
+
+        <div class="divider"></div>
+
+        <h3>Qodobbada Muhiimka ah ee ay tahay inaad samayso:</h3>
+        <ul class="action-list">
+            <li>Aaladda jimicsiga (Gym-ka) tag si aad u dhisid jidhkaaga iyo maskaxdaada.</li>
+            <li>Maalin kasta baro wax cusub si aad u ballaariso aqoontaada.</li>
+            <li>Ku celceli koodhka (coding-ka) oo dhis mashruucyo adiga kuu gaar ah.</li>
+            <li>Soco xoogaa yar maalin kasta si aad maskaxda uga nadiifiso fekerka dhex-wareegaya.</li>
+            <li>Yaree fekerka dhaafeen, beddelkeedana xoogga saar ficilka iyo shaqada.</li>
+            <li>Hagaaji hurdadaada si aad u soo celiso tamarta jidhkaaga.</li>
+            <li>Diiradda saar hadafyadaada fog, kana fogow waxyaabaha ku mashquulinaya.</li>
+        </ul>
+
+        <div class="footer">
+            Web Developer | Mustafa
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const text = document.getElementById("text");
+    const progressContainer = document.getElementById("progress-container");
+    const progressBar = document.getElementById("progress-bar");
+    const btn = document.getElementById("btn");
+    const nextBtn = document.getElementById("next-btn");
+    
+    const scanView = document.getElementById("scan-view");
+    const resultView = document.getElementById("result-view");
+
+    const scanSteps = [
+        "La xiriiraya nidaamka dhexe...",
+        "Soo raraya astaamahaaga gaarka ah...",
+        "Baaraya hab-dhaqankaaga guud...",
+        "Gorfaynaya qaabka aad u fekerto...",
+        "Xisaabinaya heerka fekerkaaga badan...",
+        "Hambalyo, baaritaankii u dambeeyay ayaa socda..."
+    ];
+
+    const advice = [
+        "Xogtu waxay muujinaysaa inaad mararka qaar aad u fekerto.",
+        "Xaalad kasta uma baahna falanqayn xeeldheer iyo walaac.",
+        "Ficilka fudud wuxuu had iyo jeer ka wanaagsan yahay fekerka badan.",
+        "Kala-kacsanaanta maskaxdu waxay ku dhalataa marka aad fadhido adigoon shaqaynayn.",
+        "Xoogga saar dhisidda noloshaada talaabo-talaabo.",
+        "Jooji dib-u-dhigista shaqada ee ay sababaan fekerka iyo cabsidu.",
+        "Qaado tallaabo hadda, oo horumar samee maalin kasta."
+    ];
+
+    let i = 0;
+    let j = 0;
+
+    function runScan(){
+        if(i < scanSteps.length){
+            text.innerText = scanSteps[i];
+            progressBar.style.width = ((i + 1) / scanSteps.length) * 100 + "%";
+            i++;
+            setTimeout(runScan, 1000);
+        } else {
+            startAdviceFlow();
+        }
+    }
+
+    function startAdviceFlow(){
+        progressContainer.style.display = "none";
+        // Show the first advice immediately so it doesn't look stuck
+        if(j < advice.length) {
+            text.innerText = "TALO MUHIIM AH (1/" + advice.length + "):\n\n" + advice[j];
+            j++;
+            nextBtn.style.display = "inline-block";
+        }
+    }
+
+    function displayNextAdvice() {
+        if(j < advice.length){
+            text.innerText = "TALO MUHIIM AH (" + (j + 1) + "/" + advice.length + "):\n\n" + advice[j];
+            j++;
+        } else {
+            showFinal();
+        }
+    }
+
+    function showFinal(){
+        nextBtn.style.display = "none";
+        scanView.style.display = "none";
+        resultView.style.display = "block";
+    }
+
+    btn.addEventListener("click", () => {
+        btn.style.display = "none";
+        progressContainer.style.display = "block";
+        runScan();
+    });
+
+    nextBtn.addEventListener("click", () => {
+        displayNextAdvice();
+    });
+});
+</script>
+
+</body>
+</html>
